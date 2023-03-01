@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github/mostcute/limitserver/client"
+	"github.com/mostcute/limitserver/client"
 	"log"
 )
 

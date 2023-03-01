@@ -2,8 +2,8 @@ package client
 
 import (
 	"context"
+	"github.com/mostcute/limitserver/types"
 	"github.com/smallnest/rpcx/client"
-	"github/mostcute/limitserver/types"
 	"log"
 )
 

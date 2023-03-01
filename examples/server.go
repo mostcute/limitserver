@@ -1,6 +1,6 @@
 package main
 
-import "github/mostcute/limitserver/server"
+import "github.com/mostcute/limitserver/server"
 
 func main() {
 	s := server.NewLimitService("7777")
