@@ -1,4 +1,4 @@
-module github/mostcute/limitserver
+module github.com/mostcute/limitserver
 
 go 1.18
 
