@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
-	"github/mostcute/limitserver/types"
+	"github.com/mostcute/limitserver/types"
 )
 
 // the second parameter is not a pointer
