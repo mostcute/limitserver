@@ -8,9 +8,17 @@ import (
 	"golang.org/x/time/rate"
 )
 
+type singlelimiter struct {
+	Name    string
+	Limit   float64
+	Cap     int
+	Limiter *rate.Limiter
+}
+
 type LimitService struct {
-	port    string
-	limiter *rate.Limiter
+	port     string
+	limiters []singlelimiter
+	//limiter *rate.Limiter
 }
 
 func NewLimitService(port string) *LimitService {
@@ -35,8 +43,13 @@ func (t *LimitService) Run() error {
 	return nil
 }
 
-func (l *LimitService) NewSpeedLimiter(limit, cap int) {
-	l.limiter = rate.NewLimiter(rate.Limit(limit), cap)
+func (l *LimitService) NewSpeedLimiter(limit float64, cap int, name string) {
+	l.limiters = append(l.limiters, singlelimiter{
+		Name:    name,
+		Limit:   limit,
+		Cap:     cap,
+		Limiter: rate.NewLimiter(rate.Limit(limit), cap),
+	})
 }
 
 func auth(ctx context.Context, req *protocol.Message, token string) error {

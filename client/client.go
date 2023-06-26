@@ -40,5 +40,16 @@ func (k *LimitClient) GetToken() error {
 	err := k.xclient.Call(context.Background(), runFuncName(), args, reply)
 	if err != nil {
 	}
+	println("Name = ", reply.Res)
+	return err
+}
+
+func (k *LimitClient) Limit() error {
+	args := types.ArgsGetToken{}
+	reply := &types.ReplyGetToken{}
+	err := k.xclient.Call(context.Background(), runFuncName(), args, reply)
+	if err != nil {
+	}
+	println("Limit = ", reply.Res)
 	return err
 }
