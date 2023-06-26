@@ -12,7 +12,7 @@ func (t *LimitService) GetToken(ctx context.Context, args types.ArgsGetToken, re
 	//err := t.limiter.Wait(context.Background())
 	for i := 0; i < len(t.limiters); i++ {
 		if i == (len(t.limiters) - 1) {
-			fmt.Println("wait ", t.limiters[i].Name)
+			//fmt.Println("wait ", t.limiters[i].Name)
 			if t.limiters[i].Limiter.Allow() {
 				reply.Res = t.limiters[i].Name
 				return nil
