@@ -34,22 +34,21 @@ func (k *LimitClient) Close() {
 		log.Println("err", err)
 	}
 }
-func (k *LimitClient) GetToken() error {
+func (k *LimitClient) GetToken() (string, error) {
 	args := types.ArgsGetToken{}
 	reply := &types.ReplyGetToken{}
 	err := k.xclient.Call(context.Background(), runFuncName(), args, reply)
 	if err != nil {
 	}
-	println("Name = ", reply.Res)
-	return err
+	//println("Name = ", reply.Res)
+	return reply.Res, err
 }
 
-func (k *LimitClient) Limit() error {
+func (k *LimitClient) Limit() (string, error) {
 	args := types.ArgsGetToken{}
 	reply := &types.ReplyGetToken{}
 	err := k.xclient.Call(context.Background(), runFuncName(), args, reply)
 	if err != nil {
 	}
-	println("Limit = ", reply.Res)
-	return err
+	return reply.Res, err
 }
