@@ -3,6 +3,9 @@ package server
 import (
 	"context"
 	"errors"
+	"sync/atomic"
+	"time"
+
 	"github.com/smallnest/rpcx/protocol"
 	"github.com/smallnest/rpcx/server"
 	"golang.org/x/time/rate"
@@ -18,6 +21,7 @@ type singlelimiter struct {
 type LimitService struct {
 	port     string
 	limiters []singlelimiter
+	Used5min uint64
 	//limiter *rate.Limiter
 }
 
@@ -50,6 +54,14 @@ func (l *LimitService) NewSpeedLimiter(limit float64, cap int, name string) {
 		Cap:     cap,
 		Limiter: rate.NewLimiter(rate.Limit(limit), cap),
 	})
+}
+
+func (l *LimitService) LoopCleanUsage(sec uint64) {
+	for {
+		time.Sleep(time.Second * time.Duration(sec))
+		atomic.StoreUint64(&l.Used5min, 0)
+	}
+
 }
 
 func auth(ctx context.Context, req *protocol.Message, token string) error {
