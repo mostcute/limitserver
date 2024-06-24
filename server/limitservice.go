@@ -13,7 +13,7 @@ import (
 func (t *LimitService) GetToken(ctx context.Context, args types.ArgsGetToken, reply *types.ReplyGetToken) error {
 
 	defer func() {
-		atomic.AddUint64(&t.Used5min, 1)
+		atomic.AddUint64(&t.Used, 1)
 	}()
 	//err := t.limiter.Wait(context.Background())
 	for i := 0; i < len(t.limiters); i++ {
@@ -53,7 +53,7 @@ func (t *LimitService) Limit(ctx context.Context, args types.ArgsGetToken, reply
 // the second parameter is not a pointer
 func (t *LimitService) Usage(ctx context.Context, args types.ArgsGetToken, reply *types.ReplyGetToken) error {
 	//err := t.limiter.Wait(context.Background())
-	total := atomic.LoadUint64(&t.Used5min)
-	reply.Res = fmt.Sprintf("%d", total)
+	// total := atomic.LoadUint64(&t.Used5min)
+	reply.Res = fmt.Sprintf("count %d  \n 1-min rate: %f \n 5-min rate: %f \n 15-min rate: %f  \n mean rate: %f \n", t.M.Count(), t.M.Rate1(), t.M.Rate5(), t.M.Rate15(), t.M.RateMean())
 	return nil
 }

@@ -3,6 +3,7 @@ module github.com/mostcute/limitserver
 go 1.18
 
 require (
+	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475
 	github.com/smallnest/rpcx v1.8.0
 	golang.org/x/time v0.0.0-20181108054448-85acf8d2951c
 )

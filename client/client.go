@@ -2,9 +2,10 @@ package client
 
 import (
 	"context"
+	"log"
+
 	"github.com/mostcute/limitserver/types"
 	"github.com/smallnest/rpcx/client"
-	"log"
 )
 
 type LimitClient struct {
@@ -35,6 +36,16 @@ func (k *LimitClient) Close() {
 	}
 }
 func (k *LimitClient) GetToken() (string, error) {
+	args := types.ArgsGetToken{}
+	reply := &types.ReplyGetToken{}
+	err := k.xclient.Call(context.Background(), runFuncName(), args, reply)
+	if err != nil {
+	}
+	//println("Name = ", reply.Res)
+	return reply.Res, err
+}
+
+func (k *LimitClient) Usage() (string, error) {
 	args := types.ArgsGetToken{}
 	reply := &types.ReplyGetToken{}
 	err := k.xclient.Call(context.Background(), runFuncName(), args, reply)

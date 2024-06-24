@@ -6,6 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/rcrowley/go-metrics"
 	"github.com/smallnest/rpcx/protocol"
 	"github.com/smallnest/rpcx/server"
 	"golang.org/x/time/rate"
@@ -21,13 +22,15 @@ type singlelimiter struct {
 type LimitService struct {
 	port     string
 	limiters []singlelimiter
-	Used5min uint64
+	Used     uint64
+	M        metrics.Meter
 	//limiter *rate.Limiter
 }
 
 func NewLimitService(port string) *LimitService {
 	return &LimitService{
 		port: port,
+		M:    metrics.NewMeter(),
 	}
 
 }
@@ -56,10 +59,12 @@ func (l *LimitService) NewSpeedLimiter(limit float64, cap int, name string) {
 	})
 }
 
-func (l *LimitService) LoopCleanUsage(sec uint64) {
+func (l *LimitService) LoopCleanUsage() {
 	for {
-		time.Sleep(time.Second * time.Duration(sec))
-		atomic.StoreUint64(&l.Used5min, 0)
+		time.Sleep(time.Second)
+		Used := atomic.LoadUint64(&l.Used)
+		atomic.StoreUint64(&l.Used, 0)
+		l.M.Mark(int64(Used))
 	}
 
 }
