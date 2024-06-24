@@ -24,6 +24,7 @@ type LimitService struct {
 	limiters []singlelimiter
 	Used     uint64
 	M        metrics.Meter
+	Last     int64
 	//limiter *rate.Limiter
 }
 

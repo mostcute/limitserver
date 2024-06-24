@@ -54,6 +54,8 @@ func (t *LimitService) Limit(ctx context.Context, args types.ArgsGetToken, reply
 func (t *LimitService) Usage(ctx context.Context, args types.ArgsGetToken, reply *types.ReplyGetToken) error {
 	//err := t.limiter.Wait(context.Background())
 	// total := atomic.LoadUint64(&t.Used5min)
-	reply.Res = fmt.Sprintf("count %d  \n 1-min rate: %f \n 5-min rate: %f \n 15-min rate: %f  \n mean rate: %f \n", t.M.Count(), t.M.Rate1(), t.M.Rate5(), t.M.Rate15(), t.M.RateMean())
+	count := t.M.Count()
+	reply.Res = fmt.Sprintf("last call %d \n count %d  \n 1-min rate: %f \n 5-min rate: %f \n 15-min rate: %f  \n mean rate: %f \n", count-t.Last, count, t.M.Rate1(), t.M.Rate5(), t.M.Rate15(), t.M.RateMean())
+	t.Last = count
 	return nil
 }
